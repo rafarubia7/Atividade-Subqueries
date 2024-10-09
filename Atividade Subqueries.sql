@@ -28,8 +28,10 @@ where sigla_depto = 'it'
 and funcionario.salario > (SELECT AVG(salario) FROM funcionario));
 
 -- 5.
-select nome_depto, qtdfuncionariosdepto 
-from departamento; 
+SELECT departamento.nome_depto, COUNT(funcionario.nome_funcionario)
+FROM departamento, funcionario
+WHERE departamento.sigla_depto = funcionario.sigla_depto
+GROUP BY departamento.nome_depto;
 
 -- 6. 
 SELECT nome_funcionario
@@ -40,11 +42,7 @@ and funcionario.salario > (SELECT AVG(salario)
 FROM funcionario WHERE sigla_depto = 'hr'));
 
 -- 7.
-SELECT nome_depto,
-(SELECT GROUP_CONCAT(nome_funcionario 
-ORDER BY nome_funcionario)
-FROM funcionario
-WHERE sigla_depto = sigla_depto) 
-as funcionarios
-FROM departamento;
-
+SELECT departamento.nome_depto, GROUP_CONCAT(funcionario.nome_funcionario)
+FROM departamento, funcionario
+WHERE departamento.sigla_depto = funcionario.sigla_depto
+GROUP BY departamento.nome_depto;
